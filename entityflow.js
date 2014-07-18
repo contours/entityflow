@@ -60,29 +60,6 @@ d3.entityflow = function() {
     return entityflow
   }
 
-  entityflow.head = function(entity) {
-    return { x: entity.nodes[0].session.x
-           , y: entity.nodes[0].y
-           , dx: entity.nodes[0].session.dx
-           , dy: entity.nodes[0].dy
-           , entity: entity }
-  }
-
-  entityflow.nodes = function(entity) {
-    return entity.nodes
-                 .filter(function(node) {
-                   return (! node.detour)
-                 })
-                 .map(function(node) {
-                   return { x: node.session.x
-                          , y: node.y
-                          , dx: node.session.dx
-                          , dy: node.dy
-                          , value: node.value
-                          , entity: entity }
-                 })
-  }
-
   entityflow.layout = function(iterations) {
     computeSessionGraph()
     computeSessionBreadths()
@@ -96,6 +73,36 @@ d3.entityflow = function() {
       return medianNodeDepth(a) - medianNodeDepth(b)
     })
     return entityflow
+  }
+
+  entityflow.entityhead = function() {
+    function head(d) {
+      return [ { x: d.nodes[0].session.x
+               , y: d.nodes[0].y
+               , dx: d.nodes[0].session.dx
+               , dy: d.nodes[0].dy
+               , entity: d }
+             ]
+    }
+    return head
+  }
+
+  entityflow.entitynodes = function() {
+    function nodes(d) {
+      return d.nodes
+              .filter(function(node) {
+               return (! node.detour)
+             })
+              .map(function(node) {
+               return { x: node.session.x
+                      , y: node.y
+                      , dx: node.session.dx
+                      , dy: node.dy
+                      , value: node.value
+                      , entity: d }
+             })
+    }
+    return nodes
   }
 
   entityflow.entitypath = function() {
@@ -164,7 +171,7 @@ d3.entityflow = function() {
         var entity = entities[e.index]
           , node = { entity: entity
                    , session: session
-                   , value: e.value
+                   , value: ("value" in e) ? e.value : 1
                    , scaledValue: e.value }
           , link
         e.name = entity.name
