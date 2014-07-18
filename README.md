@@ -1,7 +1,7 @@
 entityflow
 ==========
 
-d3 layout for showing flow of entity interactions
+d3 layout for showing flow of entity interactions: http://bl.ocks.org/rybesh/5fa6d89c5136b4e897d0
 
 <a name="entityflow" href="#entityflow">#</a> d3.layout.<b>entityflow</b>()
 
@@ -107,12 +107,3 @@ above) and returns a d3 scale function for scaling the values. This is
 useful for when a direct linear scaling of values to entity path
 height is undesirable. If *scale* is not specified, returns the
 current scale function, which defaults to null.
-
-
-
-
-
-
-
-
-
