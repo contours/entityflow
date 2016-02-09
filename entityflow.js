@@ -94,12 +94,14 @@ d3.entityflow = function() {
                return (! node.detour)
              })
               .map(function(node) {
-               return { x: node.session.x
-                      , y: node.y
-                      , dx: node.session.dx
-                      , dy: node.dy
-                      , value: node.value
-                      , entity: d }
+                var o = Object.assign({}, node,
+                  { x: node.session.x
+                  , dx: node.session.dx
+                  , entity: d
+                  })
+                delete o.index
+                delete o.session
+                return o
              })
     }
     return nodes
@@ -174,6 +176,10 @@ d3.entityflow = function() {
                    , value: ("value" in e) ? e.value : 1
                    , scaledValue: e.value }
           , link
+        for (var prop in e) {
+          if (e === 'index' || e === 'value') continue
+          node[prop] = e[prop]
+        }
         e.name = entity.name
         delete e.index
         if (! ("nodes" in entity)) { entity.nodes = [] }
@@ -196,6 +202,7 @@ d3.entityflow = function() {
     function filterEntities() {
       entities = entities.filter(
         function(entity) {
+          if (! ('nodes' in entity)) return false
           var keep = entityFilter(entity)
           if (! keep) {
             entity.nodes.forEach(function(node) {
