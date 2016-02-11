@@ -7,7 +7,7 @@ d3.entityflow = function() {
     , sessionPadding = 80
     , sessionMap = function(s) { return s }
     , entityPadding = 10
-    , entityFilter = null
+    , entityFilter = function(e) { return true }
     , valueScale = null
     , entities = []
     , sessions = []
@@ -205,7 +205,7 @@ d3.entityflow = function() {
       })
     })
 
-    if (entityFilter) filterEntities()
+    filterEntities()
 
     if (valueScale) scaleValues()
 
