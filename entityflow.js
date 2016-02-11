@@ -55,9 +55,16 @@ d3.entityflow = function() {
     return entityflow
   }
 
-  entityflow.entities = function(_) {
+  entityflow.entities = function(_, id, label) {
     if (! arguments.length) return entities
-    entities = _
+    _.forEach(function(entity) {
+      var existing = entities.find(function(e) { return e.name == entity.name })
+      if (existing) {
+        entities.push(Object.assign(entity, existing))
+      } else {
+        entities.push(entity)
+      }
+    })
     return entityflow
   }
 
