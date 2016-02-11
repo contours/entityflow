@@ -210,6 +210,7 @@ d3.entityflow = function() {
     })
 
     filterEntities()
+    filterSessions()
 
     if (valueScale) scaleValues()
 
@@ -226,6 +227,14 @@ d3.entityflow = function() {
           }
           return keep
         })
+    }
+
+    function filterSessions() {
+      sessions = sessions.filter(
+        function(session) {
+          return session.nodes.length > 0
+        }
+      )
     }
 
     function scaleValues() {
