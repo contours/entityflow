@@ -116,7 +116,6 @@ d3.entityflow = function() {
                   , dx: node.session.dx
                   , entity: d
                   })
-                delete o.index
                 delete o.session
                 return o
              })
@@ -187,7 +186,7 @@ d3.entityflow = function() {
       session.sourceLinks = []
       session.targetLinks = []
       session.entities.forEach(function(e) {
-        var entity = entities[e.index]
+        var entity = entities.find(function(x) { return x.name == e.name })
           , node = { entity: entity
                    , session: session
                    , value: ("value" in e) ? e.value : 1
@@ -197,8 +196,6 @@ d3.entityflow = function() {
           if (e === 'index' || e === 'value') continue
           node[prop] = e[prop]
         }
-        e.name = entity.name
-        delete e.index
         if (! ("nodes" in entity)) { entity.nodes = [] }
         if (entity.nodes.length > 0) {
           link = { source: entity.nodes[entity.nodes.length - 1].session
