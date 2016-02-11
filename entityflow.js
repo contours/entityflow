@@ -5,6 +5,7 @@ d3.entityflow = function() {
     , size = [1, 1]
     , sessionWidth = 140
     , sessionPadding = 80
+    , sessionMap = function(s) { return s }
     , entityPadding = 10
     , entityFilter = null
     , valueScale = null
@@ -27,6 +28,12 @@ d3.entityflow = function() {
   entityflow.sessionPadding = function(_) {
     if (! arguments.length) return sessionPadding
     sessionPadding = +_
+    return entityflow
+  }
+
+  entityflow.sessionMap = function(_) {
+    if (! arguments.length) return sessionMap
+    sessionMap = _
     return entityflow
   }
 
@@ -54,9 +61,12 @@ d3.entityflow = function() {
     return entityflow
   }
 
-  entityflow.sessions = function(_) {
+  entityflow.sessions = function(_, id, label) {
     if (! arguments.length) return sessions
-    sessions = _
+    sessions = sessions.concat(_.map(sessionMap).map(function(s) {
+      s.source = {id:id, label:label}
+      return s
+    }))
     return entityflow
   }
 
